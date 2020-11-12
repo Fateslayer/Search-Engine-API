@@ -6,5 +6,5 @@ router.get('/', (req, res) => {
 	res.send('hello');
 });
 
-// Export Controller
+// Export Router
 module.exports = router;
