@@ -7,13 +7,14 @@ require('dotenv-flow').config();
 // Load Constants
 const { PORT } = process.env;
 
+// Load Controllers
+const search = require('./api/controllers/search');
+
 // Setup Express
 const app = express();
 
 // Setup Routes
-app.get('/', (req, res) => {
-	res.send('hello');
-});
+app.use('/search', search);
 
 // Start Server
 app.listen(PORT);
