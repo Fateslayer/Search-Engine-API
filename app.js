@@ -8,7 +8,7 @@ require('dotenv-flow').config();
 const { PORT } = process.env;
 
 // Load Controllers
-const search = require('./api/controllers/search');
+const search = require('./src/controllers/search');
 
 // Setup Express
 const app = express();
