@@ -1,0 +1,14 @@
+{
+	"name": "search-engine-api",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"scripts": {
+		"dev": "node app.js"
+	},
+	"author": "Fateslayer",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.17.1"
+	}
+}
