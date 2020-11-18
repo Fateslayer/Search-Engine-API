@@ -13,5 +13,8 @@ const { PORT } = process.env;
 // Start Server
 app.listen(PORT, async () => {
 	console.log(`Server Started On Port: ${PORT}`);
-	await sequelize.sync();
+
+	await sequelize.sync({
+		force: true,
+	});
 });

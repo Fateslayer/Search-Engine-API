@@ -3,7 +3,7 @@
 // Load Modules
 const fs = require('fs');
 const path = require('path');
-const { Sequelize, DataTypes } = require('sequelize');
+const { Sequelize } = require('sequelize');
 
 // Setup Constants
 const basename = path.basename(__filename);
@@ -36,17 +36,16 @@ fs.readdirSync(__dirname)
 		);
 	})
 	.forEach(file => {
-		console.log(file);
-		const model = require(path.join(__dirname, file))(sequelize, DataTypes);
+		const model = require(path.join(__dirname, file))(sequelize);
 		db[model.name] = model;
 	});
 
 // Setup Model Associations
-Object.keys(db).forEach(modelName => {
-	if (db[modelName].associate) {
-		db[modelName].associate(db);
-	}
-});
+// Object.keys(db).forEach(modelName => {
+// 	if (db[modelName].associate) {
+// 		db[modelName].associate(db);
+// 	}
+// });
 
 // Attach Objects To Export Object
 db.sequelize = sequelize;
