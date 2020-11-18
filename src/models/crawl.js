@@ -10,16 +10,18 @@ module.exports = sequelize => {
 	Crawl.init(
 		{
 			link: {
-				isUrl: true,
+				type: DataTypes.STRING,
 				unique: true,
 				allowNull: false,
-				type: DataTypes.STRING,
+				validate: {
+					isUrl: true,
+				},
 			},
 			status: {
-				allowNull: false,
 				type: DataTypes.ENUM,
-				defaultValue: 'CRAWL',
+				allowNull: false,
 				values: ['CRAWL', 'CRAWLING'],
+				defaultValue: 'CRAWL',
 			},
 		},
 		{ sequelize }
