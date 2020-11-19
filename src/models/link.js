@@ -41,7 +41,20 @@ module.exports = sequelize => {
 
 	// Setup Associations
 	Link.associate = db => {
+		// Many-To-Many Association With Keyword Table
 		Link.belongsToMany(db.Keyword, { through: 'Index' });
+
+		// Many-To-Many Association With Self
+		Link.belongsToMany(Link, {
+			through: 'Referrer',
+			as: 'Parent',
+			foreignKey: 'parentLinkId',
+		});
+		Link.belongsToMany(Link, {
+			through: 'Referrer',
+			as: 'Child',
+			foreignKey: 'childLinkId',
+		});
 	};
 
 	// Return Model
