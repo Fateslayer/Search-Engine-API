@@ -9,7 +9,7 @@ module.exports = sequelize => {
 	// Setup Schema
 	Link.init(
 		{
-			link: {
+			address: {
 				type: DataTypes.STRING,
 				unique: true,
 				allowNull: false,
@@ -17,43 +17,38 @@ module.exports = sequelize => {
 					isUrl: true,
 				},
 			},
-			title: {
-				type: DataTypes.STRING,
-				allowNull: false,
-				validate: {
-					notEmpty: true,
-				},
-			},
-			text: {
-				type: DataTypes.CITEXT,
-				allowNull: false,
-				validate: {
-					notEmpty: true,
-				},
-			},
 			rank: {
 				type: DataTypes.DOUBLE,
 				allowNull: false,
+				defaultValue: 0,
+			},
+			status: {
+				type: DataTypes.ENUM,
+				allowNull: false,
+				values: ['CRAWL', 'CRAWLING', 'CRAWLED'],
+				defaultValue: 'CRAWL',
 			},
 		},
 		{ sequelize }
 	);
 
 	// Setup Associations
-	Link.associate = db => {
-		// Many-To-Many Association With Keyword Table
-		Link.belongsToMany(db.Keyword, { through: 'Index' });
+	Link.associate = ({ Page }) => {
+		// One-To-One Association With Page Model
+		Link.hasOne(Page, {
+			as: 'link',
+		});
 
 		// Many-To-Many Association With Self
 		Link.belongsToMany(Link, {
-			through: 'Referrer',
-			as: 'Parent',
-			foreignKey: 'parentLinkId',
+			through: 'ChildLinks',
+			as: 'parent',
+			foreignKey: 'parentId',
 		});
 		Link.belongsToMany(Link, {
-			through: 'Referrer',
-			as: 'Child',
-			foreignKey: 'childLinkId',
+			through: 'ChildLinks',
+			as: 'child',
+			foreignKey: 'childId',
 		});
 	};
 

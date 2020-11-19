@@ -9,7 +9,7 @@ module.exports = sequelize => {
 	// Setup Schema
 	Keyword.init(
 		{
-			keyword: {
+			text: {
 				type: DataTypes.STRING,
 				unique: true,
 				allowNull: false,
@@ -22,8 +22,13 @@ module.exports = sequelize => {
 	);
 
 	// Setup Associations
-	Keyword.associate = db => {
-		Keyword.belongsToMany(db.Link, { through: 'Index' });
+	Keyword.associate = ({ Page }) => {
+		// Many-To-Many Association With Page Model
+		Keyword.belongsToMany(Page, {
+			through: 'Index',
+			as: 'keyword',
+			foreignKey: 'keywordId',
+		});
 	};
 
 	// Return Model
