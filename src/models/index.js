@@ -41,11 +41,11 @@ fs.readdirSync(__dirname)
 	});
 
 // Setup Model Associations
-// Object.keys(db).forEach(modelName => {
-// 	if (db[modelName].associate) {
-// 		db[modelName].associate(db);
-// 	}
-// });
+Object.keys(db).forEach(modelName => {
+	if (db[modelName].associate) {
+		db[modelName].associate(db);
+	}
+});
 
 // Attach Objects To Export Object
 db.sequelize = sequelize;

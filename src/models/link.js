@@ -39,6 +39,11 @@ module.exports = sequelize => {
 		{ sequelize }
 	);
 
+	// Setup Associations
+	Link.associate = db => {
+		Link.belongsToMany(db.Keyword, { through: 'Index' });
+	};
+
 	// Return Model
 	return Link;
 };
