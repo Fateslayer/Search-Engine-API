@@ -11,6 +11,9 @@ const basename = path.basename(__filename);
 // Initailize Express
 const app = express();
 
+// Setup Body Parser
+app.use(express.json());
+
 // Setup Routes
 fs.readdirSync(__dirname)
 	.filter(file => {
