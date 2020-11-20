@@ -1,9 +1,13 @@
 // Load Express Router
 const router = require('express').Router();
 
+// Load Services
+const Crawl = require('../services/crawl');
+
 // Setup Routes
 router.post('/', async (req, res) => {
-	res.send(req.body);
+	const result = await Crawl.addLinks();
+	res.send(result);
 });
 
 // Export Router

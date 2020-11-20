@@ -1,9 +1,9 @@
-// Create Search Class
+// Create Service
 class Search {
 	static async search(query) {
 		return query;
 	}
 }
 
-// Export Search Class
+// Export Service
 module.exports = Search;
