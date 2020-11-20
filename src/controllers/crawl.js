@@ -13,7 +13,12 @@ router.post('/', async ({ body }, res) => {
 
 		if (links.length > 0) {
 			const result = await Crawl.addLinks(links);
-			res.send(result);
+
+			if (result) {
+				res.send();
+			} else {
+				res.status(500).send();
+			}
 		} else {
 			res.status(400).send();
 		}
