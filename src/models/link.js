@@ -29,24 +29,22 @@ module.exports = sequelize => {
 				defaultValue: 'CRAWL',
 			},
 		},
-		{ sequelize }
+		{ sequelize, modelName: 'link' }
 	);
 
 	// Setup Associations
 	Link.associate = ({ Page }) => {
 		// One-To-One Association With Page Model
-		Link.hasOne(Page, {
-			as: 'link',
-		});
+		Link.hasOne(Page);
 
 		// Many-To-Many Association With Self
 		Link.belongsToMany(Link, {
-			through: 'ChildLinks',
+			through: 'childLinks',
 			as: 'parent',
 			foreignKey: 'parentId',
 		});
 		Link.belongsToMany(Link, {
-			through: 'ChildLinks',
+			through: 'childLinks',
 			as: 'child',
 			foreignKey: 'childId',
 		});

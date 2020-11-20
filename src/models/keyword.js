@@ -18,16 +18,14 @@ module.exports = sequelize => {
 				},
 			},
 		},
-		{ sequelize }
+		{ sequelize, modelName: 'keyword' }
 	);
 
 	// Setup Associations
 	Keyword.associate = ({ Page }) => {
 		// Many-To-Many Association With Page Model
 		Keyword.belongsToMany(Page, {
-			through: 'Index',
-			as: 'keyword',
-			foreignKey: 'keywordId',
+			through: 'index',
 		});
 	};
 

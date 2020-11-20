@@ -37,7 +37,8 @@ fs.readdirSync(__dirname)
 	})
 	.forEach(file => {
 		const model = require(path.join(__dirname, file))(sequelize);
-		db[model.name] = model;
+		const name = model.name[0].toUpperCase() + model.name.slice(1);
+		db[name] = model;
 	});
 
 // Setup Model Associations

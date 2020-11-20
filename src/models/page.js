@@ -24,21 +24,17 @@ module.exports = sequelize => {
 				},
 			},
 		},
-		{ sequelize }
+		{ sequelize, modelName: 'page' }
 	);
 
 	// Setup Associations
 	Page.associate = ({ Link, Keyword }) => {
 		// One-To-One Association With Link Model
-		Page.belongsTo(Link, {
-			as: 'link',
-		});
+		Page.belongsTo(Link);
 
 		// Many-To-Many Association With Keyword Model
 		Page.belongsToMany(Keyword, {
-			through: 'Index',
-			as: 'page',
-			foreignKey: 'pageId',
+			through: 'index',
 		});
 	};
 
