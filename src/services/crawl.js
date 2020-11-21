@@ -6,6 +6,40 @@ const { Link } = require('../models');
 
 // Create Service
 class Crawl {
+	static async crawlLinks(limit) {
+		let links = await Link.findAll({
+			where: {
+				status: 'CRAWL',
+			},
+			limit,
+		});
+
+		if (links.length) {
+			const ids = links.map(link => link.id);
+
+			await Link.update(
+				{
+					status: 'CRAWLING',
+				},
+				{
+					where: {
+						id: ids,
+					},
+				}
+			);
+
+			links.forEach(link => this.crawlLink(link.address));
+		}
+
+		links = links.map(link => link.address);
+
+		return links;
+	}
+
+	static async crawlLink(address) {
+		console.log(address);
+	}
+
 	static async addLinks(links) {
 		links = this.transformLinksForDatabaseInsertion(links);
 		const result = await Link.bulkCreate(links, {

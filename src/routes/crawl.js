@@ -5,10 +5,10 @@ const router = require('express').Router();
 const { Crawl } = require('../controllers');
 
 // Extract Methods
-const { addLinks } = Crawl;
+const { crawlLinks, addLinks } = Crawl;
 
 // Setup Routes
-router.route('/').post(addLinks);
+router.route('/').get(crawlLinks).post(addLinks);
 
 // Export Router
 module.exports = router;

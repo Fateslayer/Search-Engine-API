@@ -3,6 +3,12 @@ const { Crawl: CrawlService } = require('../services');
 
 // Create Controller
 class Crawl {
+	static async crawlLinks({ query }, res) {
+		const limit = +(query.limit || 10);
+		const links = await CrawlService.crawlLinks(limit);
+		res.send({ links });
+	}
+
 	static async addLinks({ body }, res) {
 		let { links } = body;
 
