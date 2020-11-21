@@ -1,21 +1,20 @@
-// Load Express Router
-const router = require('express').Router();
-
 // Load Services
-const Search = require('../services/search');
+const { Search: SearchService } = require('../services');
 
-// Setup Routes
-router.get('/', async (req, res) => {
-	let query = req.query.q || '';
-	query = query.trim().toLowerCase();
+// Create Controller
+class Search {
+	static async getResults(req, res) {
+		let query = req.query.q || '';
+		query = query.trim().toLowerCase();
 
-	if (query) {
-		const results = await Search.search(query);
-		res.send(results);
-	} else {
-		res.status(400).send();
+		if (query) {
+			const results = await SearchService.getResults(query);
+			res.send(results);
+		} else {
+			res.status(400).send();
+		}
 	}
-});
+}
 
-// Export Router
-module.exports = router;
+// Export Controller
+module.exports = Search;

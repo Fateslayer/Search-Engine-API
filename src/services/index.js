@@ -5,8 +5,8 @@ const path = require('path');
 // Setup Constants
 const basename = path.basename(__filename);
 
-// Initailize Controllers
-const controllers = {};
+// Initailize Services
+const services = {};
 
 // Setup Routes
 fs.readdirSync(__dirname)
@@ -18,9 +18,9 @@ fs.readdirSync(__dirname)
 		);
 	})
 	.forEach(file => {
-		const controller = require(path.join(__dirname, file));
-		controllers[controller.name] = controller;
+		const service = require(path.join(__dirname, file));
+		services[service.name] = service;
 	});
 
-// Export Controllers
-module.exports = controllers;
+// Export Services
+module.exports = services;

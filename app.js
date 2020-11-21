@@ -2,7 +2,7 @@
 require('dotenv-flow').config();
 
 // Load Express
-const app = require('./src/controllers');
+const app = require('./src/routes');
 
 // Load Database
 const { sequelize } = require('./src/models');

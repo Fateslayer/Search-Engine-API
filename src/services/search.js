@@ -1,6 +1,6 @@
 // Create Service
 class Search {
-	static async search(query) {
+	static async getResults(query) {
 		return query;
 	}
 }

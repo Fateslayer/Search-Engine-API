@@ -1,12 +1,16 @@
 // Load Modules
 const fs = require('fs');
 const path = require('path');
+const express = require('express');
 
 // Setup Constants
 const basename = path.basename(__filename);
 
-// Initailize Controllers
-const controllers = {};
+// Initailize Express
+const app = express();
+
+// Setup Body Parser
+app.use(express.json());
 
 // Setup Routes
 fs.readdirSync(__dirname)
@@ -18,9 +22,10 @@ fs.readdirSync(__dirname)
 		);
 	})
 	.forEach(file => {
-		const controller = require(path.join(__dirname, file));
-		controllers[controller.name] = controller;
+		const route = '/' + file.slice(0, -3);
+		const router = require(path.join(__dirname, file));
+		app.use(route, router);
 	});
 
-// Export Controllers
-module.exports = controllers;
+// Export Express Object
+module.exports = app;

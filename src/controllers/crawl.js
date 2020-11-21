@@ -1,31 +1,30 @@
-// Load Express Router
-const router = require('express').Router();
-
 // Load Services
-const Crawl = require('../services/crawl');
+const { Crawl: CrawlService } = require('../services');
 
-// Setup Routes
-router.post('/', async ({ body }, res) => {
-	let { links } = body;
+// Create Controller
+class Crawl {
+	static async addLinks({ body }, res) {
+		let { links } = body;
 
-	if (Array.isArray(links)) {
-		links = Crawl.getValidLinks(links);
+		if (Array.isArray(links)) {
+			links = CrawlService.getValidLinks(links);
 
-		if (links.length > 0) {
-			const result = await Crawl.addLinks(links);
+			if (links.length > 0) {
+				const result = await CrawlService.addLinks(links);
 
-			if (result) {
-				res.send();
+				if (result) {
+					res.send();
+				} else {
+					res.status(500).send();
+				}
 			} else {
-				res.status(500).send();
+				res.status(400).send();
 			}
 		} else {
 			res.status(400).send();
 		}
-	} else {
-		res.status(400).send();
 	}
-});
+}
 
-// Export Router
-module.exports = router;
+// Export Controller
+module.exports = Crawl;
