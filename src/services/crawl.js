@@ -1,4 +1,5 @@
 // Load Modules
+const axios = require('axios');
 const validator = require('validator');
 
 // Load Models
@@ -40,7 +41,17 @@ class Crawl {
 	}
 
 	static async crawlLinks(links) {
-		console.log('yes');
+		await links.forEach(async link => {
+			const address = `https://${link.address}`;
+			const { data } = await axios.get(address).catch(e => {
+				console.error(e);
+				return {};
+			});
+
+			if (data) {
+				console.log(data);
+			}
+		});
 	}
 
 	static async addLinks(links) {
