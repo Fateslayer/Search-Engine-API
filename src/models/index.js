@@ -7,6 +7,8 @@ const { Sequelize } = require('sequelize');
 
 // Setup Constants
 const basename = path.basename(__filename);
+
+// Load Environment Variables
 const {
 	DB_HOST,
 	DB_DIALECT,
@@ -14,6 +16,8 @@ const {
 	DB_USERNAME,
 	DB_PASSWORD,
 } = process.env;
+
+// Initialize Database Connection Options
 const OPTIONS = {
 	host: DB_HOST,
 	dialect: DB_DIALECT,

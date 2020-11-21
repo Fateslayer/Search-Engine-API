@@ -8,7 +8,7 @@ const basename = path.basename(__filename);
 // Initailize Services
 const services = {};
 
-// Setup Routes
+// Populate Services
 fs.readdirSync(__dirname)
 	.filter(file => {
 		return (

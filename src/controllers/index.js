@@ -8,7 +8,7 @@ const basename = path.basename(__filename);
 // Initailize Controllers
 const controllers = {};
 
-// Setup Routes
+// Populate Controllers
 fs.readdirSync(__dirname)
 	.filter(file => {
 		return (

@@ -9,7 +9,7 @@ const basename = path.basename(__filename);
 // Initailize Express
 const app = express();
 
-// Setup Body Parser
+// Use Body Parser
 app.use(express.json());
 
 // Setup Routes
