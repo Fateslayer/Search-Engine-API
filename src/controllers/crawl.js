@@ -4,12 +4,16 @@ const { Crawl: CrawlService } = require('../services');
 // Create Controller
 class Crawl {
 	static async crawlLinks({ query }, res) {
-		const limit = +query.limit || 10; // Default Limit Is 10 Links
-		const links = await CrawlService.getLinksForCrawling(limit); // Get Links For Crawling
-		const count = links.length;
+		const limit = +query.limit || 10; // Default Limit Is 10
+		let links = await CrawlService.getLinksForCrawling(limit); // Get Links To Crawl (Upto Limit)
+		let count = links.length;
 
 		if (count) {
-			await CrawlService.setStatusToCrawling(links);
+			[count, links] = await CrawlService.setStatusToCrawling(links); // To Prevent Crawling The Same Links Again
+
+			if (count) {
+				CrawlService.crawlLinks(links); // Crawl Links In Background (Don't Use 'await' Here)
+			}
 		}
 
 		res.send({ limit, count, links });

@@ -23,16 +23,24 @@ class Crawl {
 		const ids = links.map(link => link.id);
 
 		// Update All Links Status To 'CRAWLING' That Matches The ID's
-		await Link.update(
+		const result = await Link.update(
 			{
 				status: 'CRAWLING',
 			},
 			{
 				where: {
 					id: ids,
+					status: 'CRAWL',
 				},
+				returning: true,
 			}
 		);
+
+		return result;
+	}
+
+	static async crawlLinks(links) {
+		console.log('yes');
 	}
 
 	static async addLinks(links) {
