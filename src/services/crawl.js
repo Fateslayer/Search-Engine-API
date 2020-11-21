@@ -20,7 +20,7 @@ class Crawl {
 			// Extract Link ID's
 			const ids = links.map(link => link.id);
 
-			// Update All Links Status To CRAWLING That We Found
+			// Update All Links Status To 'CRAWLING' That We Found
 			await Link.update(
 				{
 					status: 'CRAWLING',
@@ -66,7 +66,7 @@ class Crawl {
 	static transformLinksForDatabaseInsertion(links) {
 		// Transform Simple Array Into Array Of Objects For Bulk Create
 		links = links.map(link => {
-			link = link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, ''); // Remove http://, https://, www. Etc From Link
+			link = link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, ''); // Remove 'http://', 'https://', 'www.' Etc From Link
 
 			return {
 				address: link, // Address Is The Column Name Inside Link Model To Store URL's
