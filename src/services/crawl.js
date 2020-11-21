@@ -6,44 +6,33 @@ const { Link } = require('../models');
 
 // Create Service
 class Crawl {
-	static async crawlLinks(limit) {
+	static async getLinksForCrawling(limit) {
 		// Fetch All Links That Needs To Be Crawled (Upto Limit)
-		let links = await Link.findAll({
+		const links = await Link.findAll({
 			where: {
 				status: 'CRAWL',
 			},
 			limit,
 		});
 
-		// If There Are Such Links
-		if (links.length) {
-			// Extract Link ID's
-			const ids = links.map(link => link.id);
-
-			// Update All Links Status To 'CRAWLING' That We Found
-			await Link.update(
-				{
-					status: 'CRAWLING',
-				},
-				{
-					where: {
-						id: ids,
-					},
-				}
-			);
-
-			// Crawl Each Link In The Background Without Waiting
-			links.forEach(link => this.crawlLink(link.address));
-		}
-
-		// Extract All Link Addresses
-		links = links.map(link => link.address);
-
 		return links;
 	}
 
-	static async crawlLink(address) {
-		console.log(address);
+	static async setStatusToCrawling(links) {
+		// Extract Link ID's
+		const ids = links.map(link => link.id);
+
+		// Update All Links Status To 'CRAWLING' That Matches The ID's
+		await Link.update(
+			{
+				status: 'CRAWLING',
+			},
+			{
+				where: {
+					id: ids,
+				},
+			}
+		);
 	}
 
 	static async addLinks(links) {

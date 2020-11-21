@@ -5,8 +5,14 @@ const { Crawl: CrawlService } = require('../services');
 class Crawl {
 	static async crawlLinks({ query }, res) {
 		const limit = +query.limit || 10; // Default Limit Is 10 Links
-		const links = await CrawlService.crawlLinks(limit); // Crawl Links (Upto Limit)
-		res.send({ limit, links });
+		const links = await CrawlService.getLinksForCrawling(limit); // Get Links For Crawling
+		const count = links.length;
+
+		if (count) {
+			await CrawlService.setStatusToCrawling(links);
+		}
+
+		res.send({ limit, count, links });
 	}
 
 	static async addLinks({ body }, res) {
@@ -16,10 +22,11 @@ class Crawl {
 			links = CrawlService.getValidLinks(links);
 
 			if (links.length > 0) {
-				const result = await CrawlService.addLinks(links);
+				links = await CrawlService.addLinks(links);
+				const count = links.length;
 
-				if (result) {
-					res.send();
+				if (count) {
+					res.send({ count, links });
 				} else {
 					res.status(500).send();
 				}
