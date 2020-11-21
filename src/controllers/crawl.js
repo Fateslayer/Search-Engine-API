@@ -4,8 +4,8 @@ const { Crawl: CrawlService } = require('../services');
 // Create Controller
 class Crawl {
 	static async crawlLinks({ query }, res) {
-		const limit = +query.limit || 10;
-		const links = await CrawlService.crawlLinks(limit);
+		const limit = +query.limit || 10; // Default Limit Is 10 Links
+		const links = await CrawlService.crawlLinks(limit); // Crawl Links (Upto Limit)
 		res.send({ limit, links });
 	}
 

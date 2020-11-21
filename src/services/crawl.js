@@ -7,6 +7,7 @@ const { Link } = require('../models');
 // Create Service
 class Crawl {
 	static async crawlLinks(limit) {
+		// Fetch All Links That Needs To Be Crawled (Upto Limit)
 		let links = await Link.findAll({
 			where: {
 				status: 'CRAWL',
@@ -14,9 +15,12 @@ class Crawl {
 			limit,
 		});
 
+		// If There Are Such Links
 		if (links.length) {
+			// Extract Link ID's
 			const ids = links.map(link => link.id);
 
+			// Update All Links Status To CRAWLING That We Found
 			await Link.update(
 				{
 					status: 'CRAWLING',
@@ -28,9 +32,11 @@ class Crawl {
 				}
 			);
 
+			// Crawl Each Link In The Background Without Waiting
 			links.forEach(link => this.crawlLink(link.address));
 		}
 
+		// Extract All Link Addresses
 		links = links.map(link => link.address);
 
 		return links;
@@ -43,7 +49,7 @@ class Crawl {
 	static async addLinks(links) {
 		links = this.transformLinksForDatabaseInsertion(links);
 		const result = await Link.bulkCreate(links, {
-			updateOnDuplicate: ['address'],
+			updateOnDuplicate: ['address'], // Don't Update Any Field If Link Already Exists
 		});
 
 		return result;
