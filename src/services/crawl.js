@@ -1,5 +1,6 @@
 // Load Modules
 const axios = require('axios');
+const cheerio = require('cheerio');
 const validator = require('validator');
 
 // Load Models
@@ -49,9 +50,36 @@ class Crawl {
 			});
 
 			if (data) {
-				console.log(data);
+				const $ = cheerio.load(data); // Parse HTML
+				const childLinks = {}; // Using Object To Keep Links Unique On Push
+
+				$('a').each((index, anchor) => {
+					// Get Link Without Query String Or Get 'null' If Link Is Invalid
+					const childLink = this.cleanLink(
+						$(anchor).attr('href').trim().toLowerCase()
+					);
+
+					if (childLink) {
+						childLinks[childLink] = ''; // Add Link To childLinks Object
+					}
+				});
+
+				childLinks = Object.keys(childLinks); // Extract All Links In Array Form
+				const text = $('body').text().trim();
 			}
 		});
+	}
+
+	static cleanLink(link) {
+		if (validator.isURL(link)) {
+			return this.removeQueryFromLink(link);
+		} else {
+			return null;
+		}
+	}
+
+	static removeQueryFromLink(link) {
+		return link.split(/[?#]/)[0]; // Remove Query String & Pound Sign From URL
 	}
 
 	static async addLinks(links) {
