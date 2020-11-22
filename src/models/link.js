@@ -40,12 +40,12 @@ module.exports = sequelize => {
 		// Many-To-Many Association With Self
 		Link.belongsToMany(Link, {
 			through: 'childLinks',
-			as: 'parent',
+			as: 'child',
 			foreignKey: 'parentId',
 		});
 		Link.belongsToMany(Link, {
 			through: 'childLinks',
-			as: 'child',
+			as: 'parent',
 			foreignKey: 'childId',
 		});
 	};

@@ -39,6 +39,11 @@ class Crawl {
 				});
 
 				childLinks = await this.addLinks(childLinks); // Add Child Links For Next Crawl
+
+				await childLinks.forEach(async childLink => {
+					await link.addChild(childLink); // Create Child Link Association
+				});
+
 				const text = $('body').text().trim(); // Get Page Text
 			} else {
 				await link.destroy(); // Delete Invalid Link
