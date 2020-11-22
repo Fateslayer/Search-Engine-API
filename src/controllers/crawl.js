@@ -6,14 +6,8 @@ class Crawl {
 	static async crawlLinks({ query }, res) {
 		const limit = +query.limit || 10; // Default Limit Is 10
 		const links = await CrawlService.getLinksForCrawling(limit); // Get Links To Crawl (Upto Limit)
-		const count = links.length;
-
-		if (count) {
-			await CrawlService.setStatusOfLinks(links, 'CRAWLING'); // To Prevent Crawling The Same Links Again
-			CrawlService.crawlLinks(links); // Crawl Links In Background (Don't Use 'await' Here)
-		}
-
-		res.send({ limit, count, links });
+		CrawlService.crawlLinks(links); // Crawl Links In Background (Don't Use 'await' Here)
+		res.send({ limit });
 	}
 
 	static async addLinks({ body }, res) {

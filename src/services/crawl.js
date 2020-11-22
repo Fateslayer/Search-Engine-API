@@ -21,10 +21,11 @@ class Crawl {
 	}
 
 	static async crawlLinks(links) {
+		await this.setStatusOfLinks(links, 'CRAWLING'); // To Prevent Crawling The Same Links Again
+
 		await links.forEach(async link => {
 			const address = `https://${link.address}`;
 			const { data } = await axios.get(address).catch(e => {
-				console.error(e);
 				return {};
 			});
 
@@ -39,10 +40,12 @@ class Crawl {
 
 				childLinks = await this.addLinks(childLinks); // Add Child Links For Next Crawl
 				const text = $('body').text().trim(); // Get Page Text
+			} else {
+				await link.destroy(); // Delete Invalid Link
 			}
 		});
 
-		await this.setStatusOfLinks(links, 'CRAWLED');
+		await this.setStatusOfLinks(links, 'CRAWLED'); // To Prevent Crawling The Same Links Again
 	}
 
 	static async addLinks(links) {
