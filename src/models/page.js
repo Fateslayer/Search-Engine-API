@@ -17,7 +17,7 @@ module.exports = sequelize => {
 				},
 			},
 			text: {
-				type: DataTypes.CITEXT,
+				type: DataTypes.TEXT,
 				allowNull: false,
 				validate: {
 					notEmpty: true,
