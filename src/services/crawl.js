@@ -46,6 +46,11 @@ class Crawl {
 
 				const title = $('title').text().trim(); // Get Page Title
 				const text = $('body').text().trim(); // Get Page Text
+
+				await link.createPage({
+					title,
+					text,
+				});
 			} else {
 				await link.destroy(); // Delete Invalid Link
 			}
