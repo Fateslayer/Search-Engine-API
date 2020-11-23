@@ -35,7 +35,10 @@ class Crawl {
 
 				$('a').each((index, anchor) => {
 					const childLink = $(anchor).attr('href');
-					childLinks.push(childLink);
+
+					if (childLink) {
+						childLinks.push(childLink);
+					}
 				});
 
 				childLinks = await this.addLinks(childLinks); // Add Child Links For Next Crawl
@@ -45,7 +48,8 @@ class Crawl {
 				});
 
 				const title = $('title').text().trim(); // Get Page Title
-				const text = $('body').text().trim(); // Get Page Text
+				let text = $('body').text(); // Get Page Text
+				text = this.shortenText(text);
 
 				await link.createPage({
 					title,
@@ -126,6 +130,17 @@ class Crawl {
 		link = link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, ''); // Remove 'http://', 'https://', 'www.' Etc From Link
 
 		return link;
+	}
+
+	static shortenText(text) {
+		text = text.replace(/(<([^>]+)>)/gi, ''); // Remove All HTML Tags From Text
+		text = text.replace(/([^A-Z])([A-Z])/g, '$1 $2'); // Add Space Before Every Capital Letter Not Followed By A Capital Letter
+		text = text.replace(/([^0-9\,\.])([0-9])/g, '$1 $2'); // Add Space Before Every Number Not Followed By A Number, Comma Or Period
+		text = text.replace(/([A-Z])([A-Z][a-z])/g, '$1 $2'); // Add Space Before Group Of Capital Letter & Small Letter Followed By A Capital Letter
+		text = text.replace(/\s\s+/g, ' '); // Replace Multiple Spaces With Single Space
+		text = text.trim(); // Trim Whitespace
+
+		return text;
 	}
 }
 
