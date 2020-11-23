@@ -5,7 +5,6 @@ const validator = require('validator');
 
 // Load Models
 const { Link, Keyword } = require('../models');
-const keyword = require('../models/keyword');
 
 // Create Service
 class Crawl {
