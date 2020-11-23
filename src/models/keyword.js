@@ -22,9 +22,9 @@ module.exports = sequelize => {
 	);
 
 	// Setup Associations
-	Keyword.associate = ({ Page }) => {
+	Keyword.associate = ({ Link }) => {
 		// Many-To-Many Association With Page Model
-		Keyword.belongsToMany(Page, {
+		Keyword.belongsToMany(Link, {
 			through: 'index',
 		});
 	};

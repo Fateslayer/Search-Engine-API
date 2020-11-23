@@ -140,7 +140,7 @@ class Crawl {
 	}
 
 	static async createPageAndIndex(link, title, text) {
-		const page = await link.createPage({
+		await link.createPage({
 			title,
 			text,
 		});
@@ -156,7 +156,7 @@ class Crawl {
 		});
 
 		await keywords.forEach(async keyword => {
-			await page.addKeyword(keyword);
+			await link.addKeyword(keyword);
 		});
 	}
 

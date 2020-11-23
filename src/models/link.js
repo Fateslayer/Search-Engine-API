@@ -33,11 +33,16 @@ module.exports = sequelize => {
 	);
 
 	// Setup Associations
-	Link.associate = ({ Page }) => {
+	Link.associate = ({ Page, Keyword }) => {
 		// One-To-One Association With Page Model
 		Link.hasOne(Page, {
 			onDelete: 'CASCADE',
 			onUpdate: 'CASCADE',
+		});
+
+		// Many-To-Many Association With Keyword Model
+		Link.belongsToMany(Keyword, {
+			through: 'index',
 		});
 
 		// Many-To-Many Association With Self

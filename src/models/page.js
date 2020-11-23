@@ -28,14 +28,9 @@ module.exports = sequelize => {
 	);
 
 	// Setup Associations
-	Page.associate = ({ Link, Keyword }) => {
+	Page.associate = ({ Link }) => {
 		// One-To-One Association With Link Model
 		Page.belongsTo(Link);
-
-		// Many-To-Many Association With Keyword Model
-		Page.belongsToMany(Keyword, {
-			through: 'index',
-		});
 	};
 
 	// Return Model

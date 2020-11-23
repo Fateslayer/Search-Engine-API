@@ -1,5 +1,5 @@
 // Load Models
-const { Page, Keyword } = require('../models');
+const { Link, Keyword } = require('../models');
 
 // Create Service
 class Search {
@@ -8,10 +8,20 @@ class Search {
 			where: {
 				word: query.split(' '),
 			},
-			include: Page,
 		});
 
-		return keywords;
+		const all = [];
+
+		for (const keyword of keywords) {
+			const links = await keyword.getLinks({
+				limit: 10,
+				order: [['rank', 'DESC']],
+			});
+
+			all.push(links);
+		}
+
+		return all;
 	}
 }
 
