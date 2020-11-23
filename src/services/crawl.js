@@ -44,6 +44,7 @@ class Crawl {
 					await link.addChild(childLink); // Create Child Link Association
 				});
 
+				const title = $('title').text().trim(); // Get Page Title
 				const text = $('body').text().trim(); // Get Page Text
 			} else {
 				await link.destroy(); // Delete Invalid Link
