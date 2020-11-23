@@ -9,7 +9,7 @@ class Search {
 
 		if (query) {
 			const results = await SearchService.getResults(query);
-			res.send(results);
+			res.send({ results });
 		} else {
 			res.status(400).send();
 		}

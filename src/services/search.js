@@ -1,7 +1,17 @@
+// Load Models
+const { Page, Keyword } = require('../models');
+
 // Create Service
 class Search {
 	static async getResults(query) {
-		return query;
+		const keywords = await Keyword.findAll({
+			where: {
+				word: query.split(' '),
+			},
+			include: Page,
+		});
+
+		return keywords;
 	}
 }
 
