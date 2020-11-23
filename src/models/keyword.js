@@ -9,7 +9,7 @@ module.exports = sequelize => {
 	// Setup Schema
 	Keyword.init(
 		{
-			text: {
+			word: {
 				type: DataTypes.STRING,
 				unique: true,
 				allowNull: false,

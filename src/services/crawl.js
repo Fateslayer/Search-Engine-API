@@ -4,7 +4,8 @@ const cheerio = require('cheerio');
 const validator = require('validator');
 
 // Load Models
-const { Link } = require('../models');
+const { Link, Keyword } = require('../models');
+const keyword = require('../models/keyword');
 
 // Create Service
 class Crawl {
@@ -50,11 +51,7 @@ class Crawl {
 				const title = $('title').text().trim(); // Get Page Title
 				let text = $('body').text(); // Get Page Text
 				text = this.shortenText(text);
-
-				await link.createPage({
-					title,
-					text,
-				});
+				await this.createPageAndIndex(link, title, text);
 			} else {
 				await link.destroy(); // Delete Invalid Link
 			}
@@ -141,6 +138,50 @@ class Crawl {
 		text = text.trim(); // Trim Whitespace
 
 		return text;
+	}
+
+	static async createPageAndIndex(link, title, text) {
+		const page = await link.createPage({
+			title,
+			text,
+		});
+
+		text = text.toLowerCase();
+		const regex = /([a-z]+)/g; // Match English Words
+		const words = text.match(regex); // Extract English Words
+		let keywords = this.getUniqueKeywords(words);
+		keywords = this.transformKeywordsForDatabaseInsertion(keywords);
+
+		keywords = await Keyword.bulkCreate(keywords, {
+			updateOnDuplicate: ['word'], // Don't Update Any Field If Keyword Already Exists
+		});
+
+		await keywords.forEach(async keyword => {
+			await page.addKeyword(keyword);
+		});
+	}
+
+	static transformKeywordsForDatabaseInsertion(keywords) {
+		// Transform Simple Array Into Array Of Objects For Bulk Create
+		keywords = keywords.map(word => {
+			return {
+				word,
+			};
+		});
+
+		return keywords;
+	}
+
+	static getUniqueKeywords(keywords) {
+		const uniqueKeywords = {};
+
+		keywords.forEach(keyword => {
+			uniqueKeywords[keyword] = '';
+		});
+
+		keywords = Object.keys(uniqueKeywords);
+
+		return keywords;
 	}
 }
 
