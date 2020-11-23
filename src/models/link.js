@@ -35,7 +35,10 @@ module.exports = sequelize => {
 	// Setup Associations
 	Link.associate = ({ Page }) => {
 		// One-To-One Association With Page Model
-		Link.hasOne(Page);
+		Link.hasOne(Page, {
+			onDelete: 'CASCADE',
+			onUpdate: 'CASCADE',
+		});
 
 		// Many-To-Many Association With Self
 		Link.belongsToMany(Link, {
