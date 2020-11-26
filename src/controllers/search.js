@@ -10,8 +10,10 @@ class Search {
 		query = query.trim().toLowerCase();
 
 		if (query) {
-			const results = await SearchService.getResults(query, page, limit);
-			res.send({ results });
+			let results = await SearchService.getResults(query);
+			const total = results.length;
+			results = results.slice((page - 1) * limit, page * limit); // Apply Pagination
+			res.send({ results, total });
 		} else {
 			res.status(400).send();
 		}

@@ -3,11 +3,10 @@ const { Link, Keyword } = require('../models');
 
 // Create Service
 class Search {
-	static async getResults(query, page, limit) {
+	static async getResults(query) {
 		const keywords = await this.getKeywordsWithLinks(query);
 		let links = this.getUniqueLinksFromKeywords(keywords);
 		links = this.sortLinks(links);
-		links = links.slice((page - 1) * limit, page * limit); // Apply Pagination
 
 		return links;
 	}
