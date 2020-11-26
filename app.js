@@ -16,6 +16,6 @@ app.listen(PORT, async () => {
 
 	// Sync Database With Models
 	await sequelize.sync({
-		force: true,
+		// force: true,
 	});
 });
