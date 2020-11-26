@@ -4,24 +4,61 @@ const { Link, Keyword } = require('../models');
 // Create Service
 class Search {
 	static async getResults(query) {
+		const keywords = await this.getKeywordsWithLinks(query);
+		let links = this.getUniqueLinksFromKeywords(keywords);
+		links = this.sortLinks(links);
+
+		return links;
+	}
+
+	static async getKeywordsWithLinks(query) {
+		const words = this.getUniqueWords(query);
 		const keywords = await Keyword.findAll({
 			where: {
-				word: query.split(' '),
+				word: words,
 			},
+			include: [Link],
 		});
 
-		const all = [];
+		return keywords;
+	}
 
-		for (const keyword of keywords) {
-			const links = await keyword.getLinks({
-				limit: 10,
-				order: [['rank', 'DESC']],
+	static getUniqueLinksFromKeywords(keywords) {
+		let allLinks = {};
+
+		keywords.forEach(({ links }) => {
+			links.forEach(link => {
+				if (allLinks[link.id]) {
+					link.rank *= 2;
+				}
+
+				allLinks[link.id] = link;
 			});
+		});
 
-			all.push(links);
-		}
+		allLinks = Object.values(allLinks);
 
-		return all;
+		return allLinks;
+	}
+
+	static sortLinks(links, field = 'rank') {
+		links.sort(
+			(a, b) => (a[field] < b[field] ? 1 : a[field] > b[field] ? -1 : 0) // Sort In Descending Order
+		);
+
+		return links;
+	}
+
+	static getUniqueWords(query) {
+		let words = {};
+
+		query.split(' ').forEach(word => {
+			words[word] = '';
+		});
+
+		words = Object.keys(words);
+
+		return words;
 	}
 }
 
