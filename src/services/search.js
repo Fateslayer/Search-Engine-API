@@ -29,7 +29,7 @@ class Search {
 		keywords.forEach(({ links }) => {
 			links.forEach(link => {
 				if (allLinks[link.id]) {
-					link.rank += link.rank; // Increase Rank For Link That Appears In Keywords
+					link.rank *= 2; // Increase Rank For Link That Appears In Keywords
 				}
 
 				allLinks[link.id] = link;
