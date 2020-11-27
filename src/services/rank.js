@@ -52,6 +52,25 @@ class Rank {
 
 		return ranks;
 	}
+
+	static async applyRanks(ranks) {
+		const ids = Object.keys(ranks);
+
+		await ids.forEach(async id => {
+			const rank = ranks[id];
+
+			await Link.update(
+				{
+					rank,
+				},
+				{
+					where: {
+						id,
+					},
+				}
+			);
+		});
+	}
 }
 
 // Export Service
