@@ -20,7 +20,7 @@ module.exports = sequelize => {
 			rank: {
 				type: DataTypes.DOUBLE,
 				allowNull: false,
-				defaultValue: 0.001,
+				defaultValue: 0,
 			},
 			status: {
 				type: DataTypes.ENUM,
