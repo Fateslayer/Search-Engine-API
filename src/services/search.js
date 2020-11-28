@@ -16,14 +16,38 @@ class Search {
 
 		for (const link of links) {
 			const page = await link.getPage();
+			const description = this.getDescription(page.text, query);
 			results.push({
 				link: 'https://' + link.address,
 				title: page.title,
-				description: page.text,
+				description,
 			});
 		}
 
 		return results;
+	}
+
+	static getDescription(text, query) {
+		let description = '';
+		const words = query.split(' ');
+
+		for (const word of words) {
+			const index = text.search(new RegExp(word, 'i')); // Get Index For First Word Match
+
+			if (index !== -1) {
+				const temp = text.slice(index, index + 300); // Get Upto 300 Characters From Index
+
+				if (temp.length > description) {
+					description = temp;
+				}
+			}
+		}
+
+		if (description.length === 0) {
+			description = text.slice(0, 300); // Set Description To First 300 Characters If No Keyword Match
+		}
+
+		return description;
 	}
 
 	static async getKeywordsWithLinks(query) {
