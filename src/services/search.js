@@ -28,24 +28,31 @@ class Search {
 	}
 
 	static getDescription(text, query) {
+		const limit = 300;
 		let description = '';
-		const limit = 400;
+		let index = text.length;
 		const words = query.split(' ');
 
 		for (const word of words) {
-			const index = text.search(new RegExp(word, 'i')); // Get Index For First Word Match
+			let currIndex = text.search(new RegExp(word, 'i')); // Get Index For Word
 
-			if (index !== -1) {
-				const temp = text.slice(index, index + limit); // Get Upto 400 Characters From Index
+			if (currIndex !== -1) {
+				let periodIndex = text.slice(0, currIndex).lastIndexOf('.') + 1;
 
-				if (temp.length > description) {
-					description = temp;
+				if (periodIndex === -1) {
+					periodIndex = 0;
+				}
+
+				if (periodIndex < index) {
+					index = periodIndex;
 				}
 			}
 		}
 
-		if (description.length === 0) {
-			description = text.slice(0, limit); // Set Description To First 400 Characters If No Keyword Match
+		if (index === text.length) {
+			description = text.slice(0, limit); // Set Description To First N Characters
+		} else {
+			description = text.slice(index, index + limit);
 		}
 
 		return description;
