@@ -3,12 +3,27 @@ const { Link, Keyword } = require('../models');
 
 // Create Service
 class Search {
-	static async getResults(query) {
+	static async getMatchingLinks(query) {
 		const keywords = await this.getKeywordsWithLinks(query);
 		let links = this.getUniqueLinksFromKeywords(keywords);
 		links = this.sortLinks(links);
 
 		return links;
+	}
+
+	static async generateResults(links, query) {
+		const results = [];
+
+		for (const link of links) {
+			const page = await link.getPage();
+			results.push({
+				link: 'https://' + link.address,
+				title: page.title,
+				description: page.text,
+			});
+		}
+
+		return results;
 	}
 
 	static async getKeywordsWithLinks(query) {

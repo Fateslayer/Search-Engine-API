@@ -1,5 +1,6 @@
 // Load Modules
 const fs = require('fs');
+const cors = require('cors');
 const path = require('path');
 const express = require('express');
 
@@ -11,6 +12,9 @@ const app = express();
 
 // Use Body Parser
 app.use(express.json());
+
+// Use CORS
+app.use(cors());
 
 // Setup Routes
 fs.readdirSync(__dirname)
