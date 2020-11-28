@@ -29,29 +29,34 @@ class Crawl {
 				return {};
 			});
 
-			if (data) {
-				let childLinks = [];
-				const $ = cheerio.load(data); // Parse HTML
+			try {
+				if (data) {
+					let childLinks = [];
+					const $ = cheerio.load(data); // Parse HTML
 
-				$('a').each((index, anchor) => {
-					const childLink = $(anchor).attr('href');
+					$('a').each((index, anchor) => {
+						const childLink = $(anchor).attr('href');
 
-					if (childLink) {
-						childLinks.push(childLink);
-					}
-				});
+						if (childLink) {
+							childLinks.push(childLink);
+						}
+					});
 
-				childLinks = await this.addLinks(childLinks); // Add Child Links For Next Crawl
+					childLinks = await this.addLinks(childLinks); // Add Child Links For Next Crawl
 
-				await childLinks.forEach(async childLink => {
-					await link.addChild(childLink); // Create Child Link Association
-				});
+					await childLinks.forEach(async childLink => {
+						await link.addChild(childLink); // Create Child Link Association
+					});
 
-				const title = $('title').text().trim(); // Get Page Title
-				let text = $('body').text(); // Get Page Text
-				text = this.shortenText(text);
-				await this.createPageAndIndex(link, title, text);
-			} else {
+					const title = $('title').text().trim(); // Get Page Title
+					let text = $('body').text(); // Get Page Text
+					text = this.shortenText(text);
+					await this.createPageAndIndex(link, title, text);
+				} else {
+					await link.destroy(); // Delete Invalid Link
+				}
+			} catch (e) {
+				console.log(e);
 				await link.destroy(); // Delete Invalid Link
 			}
 		});
