@@ -29,13 +29,14 @@ class Search {
 
 	static getDescription(text, query) {
 		let description = '';
+		const limit = 400;
 		const words = query.split(' ');
 
 		for (const word of words) {
 			const index = text.search(new RegExp(word, 'i')); // Get Index For First Word Match
 
 			if (index !== -1) {
-				const temp = text.slice(index, index + 300); // Get Upto 300 Characters From Index
+				const temp = text.slice(index, index + limit); // Get Upto 400 Characters From Index
 
 				if (temp.length > description) {
 					description = temp;
@@ -44,7 +45,7 @@ class Search {
 		}
 
 		if (description.length === 0) {
-			description = text.slice(0, 300); // Set Description To First 300 Characters If No Keyword Match
+			description = text.slice(0, limit); // Set Description To First 400 Characters If No Keyword Match
 		}
 
 		return description;
