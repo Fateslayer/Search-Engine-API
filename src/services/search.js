@@ -3,9 +3,9 @@ const { Link, Keyword } = require('../models');
 
 // Create Service
 class Search {
-	static async getMatchingLinks(query) {
-		const keywords = await this.getKeywordsWithLinks(query);
-		let links = this.getUniqueLinksFromKeywords(keywords);
+	static async getMatchingLinks(query, limit) {
+		const keywords = await this.getKeywords(query);
+		let links = await this.getUniqueLinksFromKeywords(keywords, limit);
 		links = this.sortLinks(links);
 
 		return links;
@@ -51,30 +51,34 @@ class Search {
 		return description;
 	}
 
-	static async getKeywordsWithLinks(query) {
+	static async getKeywords(query) {
 		const words = this.getUniqueWords(query);
 		const keywords = await Keyword.findAll({
 			where: {
 				word: words,
 			},
-			include: [Link],
 		});
 
 		return keywords;
 	}
 
-	static getUniqueLinksFromKeywords(keywords) {
+	static async getUniqueLinksFromKeywords(keywords, limit) {
 		let allLinks = {};
 
-		keywords.forEach(({ links }) => {
-			links.forEach(link => {
+		for (const keyword of keywords) {
+			const links = await keyword.getLinks({
+				order: [['rank', 'DESC']],
+				limit,
+			});
+
+			for (const link of links) {
 				if (allLinks[link.id]) {
-					link.rank *= 2; // Increase Rank For Link That Appears In Keywords
+					link.rank *= 2; // Increase Rank For Link That Appears In Many Keywords
 				}
 
 				allLinks[link.id] = link;
-			});
-		});
+			}
+		}
 
 		allLinks = Object.values(allLinks);
 
