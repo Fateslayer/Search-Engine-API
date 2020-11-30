@@ -3,9 +3,9 @@ const { Link, Keyword } = require('../models');
 
 // Create Service
 class Search {
-	static async getMatchingLinks(query, limit) {
+	static async getMatchingLinks(query) {
 		const keywords = await this.getKeywords(query);
-		let links = await this.getUniqueLinksFromKeywords(keywords, limit);
+		let links = await this.getUniqueLinksFromKeywords(keywords);
 		links = this.sortLinks(links);
 
 		return links;
@@ -69,13 +69,12 @@ class Search {
 		return keywords;
 	}
 
-	static async getUniqueLinksFromKeywords(keywords, limit) {
+	static async getUniqueLinksFromKeywords(keywords) {
 		let allLinks = {};
 
 		for (const keyword of keywords) {
 			const links = await keyword.getLinks({
 				order: [['rank', 'DESC']],
-				limit,
 			});
 
 			for (const link of links) {

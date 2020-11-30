@@ -10,10 +10,7 @@ class Search {
 		query = query.trim().toLowerCase();
 
 		if (query) {
-			let links = await SearchService.getMatchingLinks(
-				query,
-				page * limit // Number Of Links To Fetch For Each Keyword
-			);
+			let links = await SearchService.getMatchingLinks(query);
 			const total = links.length;
 			links = links.slice((page - 1) * limit, page * limit); // Apply Pagination
 			const results = await SearchService.generateResults(links, query);
