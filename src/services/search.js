@@ -34,7 +34,7 @@ class Search {
 		const words = query.split(' ');
 
 		for (const word of words) {
-			let currIndex = text.search(new RegExp(word, 'i')); // Get Index For Word
+			let currIndex = text.search(new RegExp(`(\\b${word}\\b)`, 'i')); // Get Index For Word
 
 			if (currIndex !== -1) {
 				let periodIndex = text.slice(0, currIndex).lastIndexOf('.') + 1;
