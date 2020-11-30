@@ -1,11 +1,12 @@
 # Introduction
 
-A [NodeJS](https://nodejs.org) based Web Search Engine API. It can Crawl, Index, Rank & Search Links.
+A Web Search Engine API built with [NodeJS](https://nodejs.org). It uses Google's [PageRank](https://en.wikipedia.org/wiki/PageRank) algorithm for ranking links. You can can Crawl, Index, Rank & Search links using this API.
 
 ## Prerequisites
 
-1. [Node.js](https://nodejs.org)
+1. [NodeJS](https://nodejs.org)
 2. [Nodemon](https://www.npmjs.com/package/nodemon)
+3. [PostgreSQL](https://www.postgresql.org)
 
 ## Project Setup
 
@@ -29,7 +30,7 @@ npm start
 
 ## API Endpoints
 
-| Type | Endpoint                        | Description                   | POST Data                   |
+| Type | Endpoint                        | Description                   | POST Data JSON              |
 | ---- | ------------------------------- | ----------------------------- | --------------------------- |
 | POST | /crawl                          | Add links for crawling.       | `{"links": ["google.com"]}` |
 | GET  | /crawl?limit=10                 | Start crawling links.         |                             |
